@@ -1,64 +1,103 @@
-/**
- * 1543
- */
-
 import java.io.*;
 import java.util.*;
 
+/**
+ * 13223
+ */
 class Main {
-    /** 이 코드의 문제점은 문자열을 비교할 때, 다름을 발견하면 그 문자부터 다시 비교를 시작하기 때문이다. 예외 상황은 다름을 발견하기 전에 일치하는 문자가 시작하는 경우가 있다.
-     * aaabaaab
-     * aab
-     * 정답은 2이지만, 이 코드는 0을 반환한다.
-     * */
-//        public static void main(String[] args) throws Exception {
-//        System.setIn(new FileInputStream("src/input.txt"));
-//        Scanner sc = new Scanner(System.in);
-//        String str = sc.nextLine();
-//        char[] word = sc.nextLine().toCharArray();
-//        int i = 0;
-//        int count = 0;
-//        for (char ch : str.toCharArray()) {
-//            if (word[i] == ch) {
-//                i++;
-//            } else {
-//                i = 0;
-//                if (word[i] == ch) {
-//                    i++;
-//                }
-//            }
-//
-//            if (i == word.length) {
-//                i = 0;
-//                count++;
-//            }
-//        }
-//
-//        System.out.print(count);
-//    }
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream("src/input.txt"));
         Scanner sc = new Scanner(System.in);
-        String doc = sc.nextLine();
-        String word = sc.nextLine();
+        String currentTime = sc.nextLine();
+        String targetTime = sc.nextLine();
 
-        int count = 0;
-        int startIndex = 0;
-        while (true) {
-            int findIndex = doc.indexOf(word, startIndex);
-            if (findIndex < 0) break;
-            count++;
-            startIndex = findIndex + word.length();
+        int currentTimeInSec = calculateTimeInSec(currentTime);
+        int targetTimeInSec = calculateTimeInSec(targetTime);
+        int oneDayInSec = 24 * 60 * 60;
+        int waitingTimeInSec = 0;
+        if (currentTimeInSec >= targetTimeInSec) { // 시간이 같은 경우엔, 24시간 후가 targetTime이다.
+            waitingTimeInSec = oneDayInSec - currentTimeInSec + targetTimeInSec;
+        } else {
+            waitingTimeInSec = targetTimeInSec - currentTimeInSec;
         }
-        System.out.println(count);
+        String waitingTime = makeTimeFormat(waitingTimeInSec);
+        System.out.println(waitingTime);
+    }
+
+    public static int calculateTimeInSec(String time) {
+        String[] times = time.split(":");
+        int hours = Integer.parseInt(times[0]);
+        int minutes = Integer.parseInt(times[1]);
+        int seconds = Integer.parseInt(times[2]);
+
+        return (hours * 3600) + (minutes * 60) + seconds;
+    }
+
+    public static String makeTimeFormat(int timeInSec) {
+        int hours = (timeInSec / 3600);
+        timeInSec %= 3600;
+        int minutes = (timeInSec / 60);
+        timeInSec %= 60;
+        int seconds = timeInSec;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 }
 
+/**
+ * 1543
+ */
+//class Main {
+//    /** 이 코드의 문제점은 문자열을 비교할 때, 다름을 발견하면 그 문자부터 다시 비교를 시작하기 때문이다. 예외 상황은 다름을 발견하기 전에 일치하는 문자가 시작하는 경우가 있다.
+//     * aaabaaab
+//     * aab
+//     * 정답은 2이지만, 이 코드는 0을 반환한다.
+//     * */
+////        public static void main(String[] args) throws Exception {
+////        System.setIn(new FileInputStream("src/input.txt"));
+////        Scanner sc = new Scanner(System.in);
+////        String str = sc.nextLine();
+////        char[] word = sc.nextLine().toCharArray();
+////        int i = 0;
+////        int count = 0;
+////        for (char ch : str.toCharArray()) {
+////            if (word[i] == ch) {
+////                i++;
+////            } else {
+////                i = 0;
+////                if (word[i] == ch) {
+////                    i++;
+////                }
+////            }
+////
+////            if (i == word.length) {
+////                i = 0;
+////                count++;
+////            }
+////        }
+////
+////        System.out.print(count);
+////    }
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        String doc = sc.nextLine();
+//        String word = sc.nextLine();
+//
+//        int count = 0;
+//        int startIndex = 0;
+//        while (true) {
+//            int findIndex = doc.indexOf(word, startIndex);
+//            if (findIndex < 0) break;
+//            count++;
+//            startIndex = findIndex + word.length();
+//        }
+//        System.out.println(count);
+//    }
+//}
+
 
 /** 1157 */
-//import java.io.FileInputStream;
-//import java.util.Scanner;
-//
 //class Main {
 //    //    public static void main(String[] args) throws Exception {
 ////        System.setIn(new FileInputStream("src/input.txt"));
@@ -124,9 +163,6 @@ class Main {
 //}
 
 /** 1919 */
-//import java.io.FileInputStream;
-//import java.util.Scanner;
-//
 //class Main {
 //    public static void main(String[] args) throws Exception {
 //        System.setIn(new FileInputStream("src/input.txt"));
