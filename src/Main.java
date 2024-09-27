@@ -1,14 +1,237 @@
-import java.io.FileInputStream;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
-
+/*
+* https://www.acmicpc.net/problem/10448,
+*
+* */
 class Main {
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream("src/input.txt"));
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+
+        int[] map = new int[50];
+        int n = 0;
+        while(true) {
+            int num = ((n + 1) * (n + 2)) / 2;
+            if (num > 1000) break;
+            map[n] = num;
+            n++;
+        }
+
+        int[] result = new int[T];
+        for (int count = 0; count < T; count++) {
+            int targetNum = sc.nextInt();
+            boolean found = false;
+
+            for (int i = 0; i < n && !found; i++) {
+                for (int j = i; j < n && !found; j++) {
+                    for (int k = j; k < n && !found; k++) {
+                        if (map[i] + map[j] + map[k] == targetNum) {
+                            found = true;
+                        }
+                    }
+                }
+            }
+            result[count] = found ? 1 : 0; // 결과 저장
+        }
+
+        for (int i = 0; i < T; i++) {
+            System.out.println(result[i]);
+        }
     }
 }
 
-/**
+/*
+* https://fastcampus.co.kr/classroom/215135,
+* 조건을 잘 확인해야 한다. 중복은 없다.
+* */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int size = sc.nextInt();
+//        int[] map = new int[1000000];
+//        int[] array = new int[size];
+//
+//        for (int i = 0; i < size; i++) {
+//            int num = sc.nextInt();
+//            map[num]++;
+//            array[i] = num;
+//        }
+//
+//        int sum = sc.nextInt();
+//
+//        int count = 0;
+//        for (int i : array) {
+//            int findNum = sum - i;
+//            if (0 <= findNum && findNum <= 1000000) {
+//                if (map[findNum] > 0) count++;
+//            }
+//        }
+//
+//        System.out.println(count/2);
+//    }
+//}
+
+/*
+ * https://www.acmicpc.net/problem/15552,
+ */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+//
+//        int N = Integer.parseInt(br.readLine());
+//        int[] cnt = new int[10001];
+//        for (int i = 0; i < N; i++){
+//            cnt[Integer.parseInt(br.readLine())]++;
+//        }
+//
+//        for (int i = 1; i <= 10000; i++) {
+//            while(cnt[i]-- > 0) {
+//                bw.write(i + "\n");
+//            }
+//        }
+//        bw.flush();
+//    }
+//}
+
+/*
+ * https://www.acmicpc.net/problem/15552,
+ */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+//        int T = Integer.parseInt(br.readLine());
+//        while (T-- > 0) {
+//            String[] nums = br.readLine().split(" ");
+//            int a = Integer.parseInt(nums[0]);
+//            int b = Integer.parseInt(nums[1]);
+//            bw.write(a + b + "\n");
+//        }
+//        bw.flush();
+//    }
+//}
+
+/* https://www.acmicpc.net/problem/1043, */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int P = sc.nextInt();
+//        int[] result = new int[P];
+//        int count = P;
+//        while (P-- > 0) {
+//            int T = sc.nextInt();
+//            int[] h = new int[20];
+//            for (int i = 0; i < 20; i++) {
+//                h[i] = sc.nextInt();
+//            }
+//
+//            int cnt = 0;
+//            for (int i = 0; i < 20; i++) {
+//                for (int j = 0; j < i; j++) {
+//                    if (h[j] > h[i]) {
+//                        cnt++;
+//                    }
+//                }
+//            }
+//            result[T - 1] = cnt;
+//        }
+//
+//        for (int i = 0; i < count; i++) {
+//
+//            System.out.println((i + 1) + " " + result[i]);
+//        }
+//    }
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int P = sc.nextInt();
+//        int[] result = new int[P];
+//
+//        for (int i = 0; i < P; i++) {
+//            int num = sc.nextInt();
+//
+//            int[] line = new int[20];
+//            for (int j = 0; j < 20; j++) {
+//                int student = sc.nextInt();
+//
+//                if (j == 0) { // 엣지 케이스
+//                    line[j] = student;
+//                    continue;
+//                }
+//
+//                int count = 0;
+//                for (int k = j - 1; k >= 0; k--) {
+//                    if (line[k] > student) {
+//                        line[k + 1] = line[k];
+//                        line[k] = student; // 엣지 케이스
+//                        count++;
+//                    } else {
+//                        line[k + 1] = student;
+//                        break;
+//                    }
+//                }
+//
+//                result[i] += count;
+//            }
+//        }
+//
+//        for (int i = 0; i < P; i++) {
+//            System.out.println((i + 1) + " " + result[i]);
+//        }
+//    }
+//}
+
+/*
+ * https://www.acmicpc.net/problem/1236,
+ */
+//class Main {
+//        public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int y = sc.nextInt();
+//        int x = sc.nextInt();
+//        sc.nextLine(); // 남은 줄바꿈을 소비
+//
+//        char[] currentState = new char[x];
+//        int resultY = 0;
+//        for (int i = 0; i < y; i++) {
+//            char[] line = sc.nextLine().toCharArray();
+//            boolean isEmptyLine = false;
+//            for (int j = 0; j < x; j++) {
+//                if (line[j] == 'X') {
+//                    isEmptyLine = true;
+//                    currentState[j] = 'X';
+//                }
+//            }
+//            if (!isEmptyLine) resultY++;
+//        }
+//
+//        int resultX = 0;
+//        for (int i : currentState) {
+//            if (i != 'X') {
+//                resultX++;
+//            }
+//        }
+//
+//        int result = 0;
+//        if (resultX > resultY) {
+//            result = resultX;
+//        } else {
+//            result = resultY;
+//        }
+//        System.out.println(result);
+//    }
+//}
+
+/*
  * https://www.acmicpc.net/problem/10158, 실패
  * x축, y축 규칙을 따로 찾아야 함, 왜 틀린지는 모르겟음.
  */
@@ -106,7 +329,7 @@ class Main {
 //}
 
 
-/** 13223 */
+/* 13223 */
 //class Main {
 //    public static void main(String[] args) throws Exception {
 //        System.setIn(new FileInputStream("src/input.txt"));
@@ -147,7 +370,7 @@ class Main {
 //    }
 //}
 
-/** 1543 */
+/* 1543 */
 //class Main {
 //    /** 이 코드의 문제점은 문자열을 비교할 때, 다름을 발견하면 그 문자부터 다시 비교를 시작하기 때문이다. 예외 상황은 다름을 발견하기 전에 일치하는 문자가 시작하는 경우가 있다.
 //     * aaabaaab
@@ -198,7 +421,7 @@ class Main {
 //}
 
 
-/** 1157 */
+/* 1157 */
 //class Main {
 //    //    public static void main(String[] args) throws Exception {
 ////        System.setIn(new FileInputStream("src/input.txt"));
@@ -263,7 +486,7 @@ class Main {
 //    }
 //}
 
-/** 1919 */
+/* 1919 */
 //class Main {
 //    public static void main(String[] args) throws Exception {
 //        System.setIn(new FileInputStream("src/input.txt"));
