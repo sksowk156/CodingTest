@@ -1,52 +1,264 @@
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.util.Scanner;
 
 /*
-* https://www.acmicpc.net/problem/10448,
-*
-* */
+ * https://www.acmicpc.net/problem/3085
+ * */
 class Main {
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream("src/input.txt"));
         Scanner sc = new Scanner(System.in);
-        int T = sc.nextInt();
+        int size = sc.nextInt();
+        sc.nextLine();
 
-        int[] map = new int[50];
-        int n = 0;
-        while(true) {
-            int num = ((n + 1) * (n + 2)) / 2;
-            if (num > 1000) break;
-            map[n] = num;
-            n++;
+        char[][] map = new char[size][size];
+        for (int i = 0; i < size; i++) {
+            String line = sc.nextLine();
+            map[i] = line.toCharArray();
         }
 
-        int[] result = new int[T];
-        for (int count = 0; count < T; count++) {
-            int targetNum = sc.nextInt();
-            boolean found = false;
+        int[] dx = {1, -1, 0, 0};
+        int[] dy = {0, 0, 1, -1};
 
-            for (int i = 0; i < n && !found; i++) {
-                for (int j = i; j < n && !found; j++) {
-                    for (int k = j; k < n && !found; k++) {
-                        if (map[i] + map[j] + map[k] == targetNum) {
-                            found = true;
+        int maxCount = 0;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                for (int k = 0; k < 4; k++) {
+                    int newX = i + dx[k];
+                    int newY = j + dy[k];
+                    if (newX < 0 || newY < 0 || newX >= size || newY >= size) continue;
+                    if (map[newX][newY] == map[i][j]) continue;
+
+                    char temp = map[newX][newY];
+                    map[newX][newY] = map[i][j];
+                    map[i][j] = temp;
+
+                    int target = 0;
+                    for (int a = 0; a < size; a++) {
+                        int count = 0;
+                        for (int b = 0; b < size; b++) {
+                            if (target == map[a][b]) {
+                                count++;
+                                maxCount = Math.max(count, maxCount);
+                            } else {
+                                target = map[a][b];
+                                count = 1;
+                            }
                         }
                     }
+
+                    target = 0;
+                    for (int b = 0; b < size; b++) {
+                        int count = 0;
+                        for (int a = 0; a < size; a++) {
+                            if (target == map[a][b]) {
+                                count++;
+                                maxCount = Math.max(count, maxCount);
+                            } else {
+                                target = map[a][b];
+                                count = 1;
+                            }
+                        }
+                    }
+
+                    temp = map[newX][newY];
+                    map[newX][newY] = map[i][j];
+                    map[i][j] = temp;
                 }
             }
-            result[count] = found ? 1 : 0; // 결과 저장
         }
 
-        for (int i = 0; i < T; i++) {
-            System.out.println(result[i]);
-        }
+        System.out.println(maxCount);
     }
 }
 
 /*
-* https://fastcampus.co.kr/classroom/215135,
-* 조건을 잘 확인해야 한다. 중복은 없다.
-* */
+ * https://www.acmicpc.net/problem/11068
+ * */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int T = sc.nextInt();
+//        while (T-- > 0) {
+//            int num = sc.nextInt();
+//
+//            boolean flag = true;
+//            for (int i = 2; i < 65; i++) {
+//                int targetNum = num;
+//                int[] result = new int[30];
+//                int j = 0;
+//                while (targetNum > 0) {
+//                    int remainder = targetNum % i;
+//                    result[j++] = remainder;
+//                    targetNum /= i;
+//                }
+//
+//                flag = true;
+//                for (int k = 0; k < j / 2; k++) {
+//                    if (result[k] != result[j - 1 - k]) {
+//                        flag = false;
+//                        break;
+//                    }
+//                }
+//                if (flag) break;
+//            }
+//            if (flag) {
+//                System.out.println("1");
+//            } else {
+//                System.out.println("0");
+//            }
+//        }
+//    }
+//}
+
+/*
+ * https://www.acmicpc.net/problem/11068
+ * */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int N = sc.nextInt();
+//        int B = sc.nextInt();
+//
+//        char[] result = new char[30];
+//
+//        int i = 0;
+//        while (N > 0) {
+//            int remainder = N % B;
+//            if (remainder >= 10) {
+//                result[i] = (char) (remainder - 10 + 'A');
+//            } else {
+//                result[i] = (char) (remainder + '0');
+//            }
+//            i++;
+//            N /= B;
+//        }
+//
+//        for (int k = i - 1; k >= 0; k-- ) {
+//            System.out.print(result[k]);
+//        }
+//    }
+//}
+
+/*
+ * https://www.acmicpc.net/problem/11005
+ * */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int N = sc.nextInt();
+//        int B = sc.nextInt();
+//
+//        char[] result = new char[30];
+//
+//        int i = 0;
+//        while (N > 0) {
+//            int remainder = N % B;
+//            if (remainder >= 10) {
+//                result[i] = (char) (remainder - 10 + 'A');
+//            } else {
+//                result[i] = (char) (remainder + '0');
+//            }
+//            i++;
+//            N /= B;
+//        }
+//
+//        for (int k = i - 1; k >= 0; k-- ) {
+//            System.out.print(result[k]);
+//        }
+//    }
+//}
+
+/*
+ * https://www.acmicpc.net/problem/10448,
+ *
+ * */
+//class Main {
+//
+//    static boolean[] isEurekaNumber = new boolean[1001];
+//
+//    public static void preprocesse() {
+//        int[] triangleNumbers = new int[50];
+//        int triangleNumberCount = 0;
+//        for (int i = 1; ; i++) {
+//            int triangleNumber = i * (i + 1) / 2;
+//            if (triangleNumber >= 1000) break;
+//            triangleNumbers[triangleNumberCount++] = triangleNumber;
+//        }
+//
+//        boolean[] isSumOfTriangleNumber = new boolean[1000];
+//        for (int i = 0; i < triangleNumberCount; i++) {
+//            for (int j = 0; j < triangleNumberCount; j++) {
+//                int sum = triangleNumbers[i] + triangleNumbers[j];
+//                if (sum < 1000) isSumOfTriangleNumber[sum] = true;
+//            }
+//        }
+//
+//        for (int i = 1; i < 1000; i++) {
+//            if (!isSumOfTriangleNumber[i]) continue;
+//            for (int j = 0; j < triangleNumberCount; j++) {
+//                int sum = i + triangleNumbers[j];
+//                if (sum <= 1000) isEurekaNumber[sum] = true;
+//            }
+//        }
+//    }
+//
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        preprocesse();
+//
+//        Scanner sc = new Scanner(System.in);
+//        int T = sc.nextInt();
+//        while (T-- > 0) {
+//            int K = sc.nextInt();
+//            System.out.println(isEurekaNumber[K] ? "1" : "0");
+//        }
+//    }
+
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int T = sc.nextInt();
+//
+//        int[] map = new int[50];
+//        int n = 0;
+//        while(true) {
+//            int num = ((n + 1) * (n + 2)) / 2;
+//            if (num > 1000) break;
+//            map[n] = num;
+//            n++;
+//        }
+//
+//        int[] result = new int[T];
+//        for (int count = 0; count < T; count++) {
+//            int targetNum = sc.nextInt();
+//            boolean found = false;
+//
+//            for (int i = 0; i < n && !found; i++) {
+//                for (int j = i; j < n && !found; j++) {
+//                    for (int k = j; k < n && !found; k++) {
+//                        if (map[i] + map[j] + map[k] == targetNum) {
+//                            found = true;
+//                        }
+//                    }
+//                }
+//            }
+//            result[count] = found ? 1 : 0; // 결과 저장
+//        }
+//
+//        for (int i = 0; i < T; i++) {
+//            System.out.println(result[i]);
+//        }
+//    }
+//}
+
+/*
+ * https://fastcampus.co.kr/classroom/215135,
+ * 조건을 잘 확인해야 한다. 중복은 없다.
+ * */
 //class Main {
 //    public static void main(String[] args) throws Exception {
 //        System.setIn(new FileInputStream("src/input.txt"));
