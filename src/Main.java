@@ -2,75 +2,103 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 /*
- * https://www.acmicpc.net/problem/3085
- * */
+ * https://fastcampus.co.kr/classroom/215135
+ */
 class Main {
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream("src/input.txt"));
         Scanner sc = new Scanner(System.in);
-        int size = sc.nextInt();
-        sc.nextLine();
-
-        char[][] map = new char[size][size];
-        for (int i = 0; i < size; i++) {
-            String line = sc.nextLine();
-            map[i] = line.toCharArray();
+        int test = sc.nextInt();
+        String[] result = new String[test];
+        for (int i = 0; i < test; i++) {
+            int h = sc.nextInt();
+            int w = sc.nextInt();
+            int n = sc.nextInt();
+            result[i] = findRoom(h, w, n);
         }
 
-        int[] dx = {1, -1, 0, 0};
-        int[] dy = {0, 0, 1, -1};
-
-        int maxCount = 0;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                for (int k = 0; k < 4; k++) {
-                    int newX = i + dx[k];
-                    int newY = j + dy[k];
-                    if (newX < 0 || newY < 0 || newX >= size || newY >= size) continue;
-                    if (map[newX][newY] == map[i][j]) continue;
-
-                    char temp = map[newX][newY];
-                    map[newX][newY] = map[i][j];
-                    map[i][j] = temp;
-
-                    int target = 0;
-                    for (int a = 0; a < size; a++) {
-                        int count = 0;
-                        for (int b = 0; b < size; b++) {
-                            if (target == map[a][b]) {
-                                count++;
-                                maxCount = Math.max(count, maxCount);
-                            } else {
-                                target = map[a][b];
-                                count = 1;
-                            }
-                        }
-                    }
-
-                    target = 0;
-                    for (int b = 0; b < size; b++) {
-                        int count = 0;
-                        for (int a = 0; a < size; a++) {
-                            if (target == map[a][b]) {
-                                count++;
-                                maxCount = Math.max(count, maxCount);
-                            } else {
-                                target = map[a][b];
-                                count = 1;
-                            }
-                        }
-                    }
-
-                    temp = map[newX][newY];
-                    map[newX][newY] = map[i][j];
-                    map[i][j] = temp;
-                }
-            }
+        for (int i = 0; i < test; i++) {
+            System.out.println(result[i]);
         }
+    }
 
-        System.out.println(maxCount);
+    static String findRoom(int height, int width, int people) {
+        int distanceFromElevator = (people - 1) / height + 1;
+        int floor = (people - 1) % height + 1;
+        return String.format("%d%02d", floor, distanceFromElevator);
     }
 }
+
+/*
+ * https://www.acmicpc.net/problem/3085
+ * */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int size = sc.nextInt();
+//        sc.nextLine();
+//
+//        char[][] map = new char[size][size];
+//        for (int i = 0; i < size; i++) {
+//            String line = sc.nextLine();
+//            map[i] = line.toCharArray();
+//        }
+//
+//        int[] dx = {1, -1, 0, 0};
+//        int[] dy = {0, 0, 1, -1};
+//
+//        int maxCount = 0;
+//        for (int i = 0; i < size; i++) {
+//            for (int j = 0; j < size; j++) {
+//                for (int k = 0; k < 4; k++) {
+//                    int newX = i + dx[k];
+//                    int newY = j + dy[k];
+//                    if (newX < 0 || newY < 0 || newX >= size || newY >= size) continue;
+//                    if (map[newX][newY] == map[i][j]) continue;
+//
+//                    char temp = map[newX][newY];
+//                    map[newX][newY] = map[i][j];
+//                    map[i][j] = temp;
+//
+//                    int target = 0;
+//                    for (int a = 0; a < size; a++) {
+//                        int count = 0;
+//                        for (int b = 0; b < size; b++) {
+//                            if (target == map[a][b]) {
+//                                count++;
+//                                maxCount = Math.max(count, maxCount);
+//                            } else {
+//                                target = map[a][b];
+//                                count = 1;
+//                            }
+//                        }
+//                    }
+//
+//                    target = 0;
+//                    for (int b = 0; b < size; b++) {
+//                        int count = 0;
+//                        for (int a = 0; a < size; a++) {
+//                            if (target == map[a][b]) {
+//                                count++;
+//                                maxCount = Math.max(count, maxCount);
+//                            } else {
+//                                target = map[a][b];
+//                                count = 1;
+//                            }
+//                        }
+//                    }
+//
+//                    temp = map[newX][newY];
+//                    map[newX][newY] = map[i][j];
+//                    map[i][j] = temp;
+//                }
+//            }
+//        }
+//
+//        System.out.println(maxCount);
+//    }
+//}
 
 /*
  * https://www.acmicpc.net/problem/11068
