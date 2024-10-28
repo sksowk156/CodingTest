@@ -1,33 +1,96 @@
 import java.io.FileInputStream;
 import java.util.Scanner;
 
+
 /*
- * https://fastcampus.co.kr/classroom/215135
+ * https://fastcampus.co.kr/classroom/1730
+ * boolean으로 흔적을 남기는 기법을 기억하자,
  */
 class Main {
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream("src/input.txt"));
         Scanner sc = new Scanner(System.in);
-        int test = sc.nextInt();
-        String[] result = new String[test];
-        for (int i = 0; i < test; i++) {
-            int h = sc.nextInt();
-            int w = sc.nextInt();
-            int n = sc.nextInt();
-            result[i] = findRoom(h, w, n);
+        int size = sc.nextInt();
+        sc.nextLine();
+        char[] move = sc.nextLine().toCharArray();
+
+        char[][] map = new char[size][size];
+        for (int i = 0 ; i < size; i++) {
+            for (int j = 0 ; j < size; j++) {
+                map[i][j] = '.';
+            }
         }
 
-        for (int i = 0; i < test; i++) {
-            System.out.println(result[i]);
-        }
-    }
+        boolean[][] passVertical = new boolean[size][size];
+        boolean[][] passHorizontal = new boolean[size][size];
 
-    static String findRoom(int height, int width, int people) {
-        int distanceFromElevator = (people - 1) / height + 1;
-        int floor = (people - 1) % height + 1;
-        return String.format("%d%02d", floor, distanceFromElevator);
+        int curR = 0;
+        int curC = 0;
+        for (int i = 0 ; i < move.length; i++) {
+            char cmd = move[i];
+            if (cmd == 'D') {
+                if (curR == size -1) continue;
+                passVertical[curR][curC] = true;
+                passVertical[curR + 1][curC] = true;
+                curR++;
+            } else if (cmd == 'U') {
+                if (curR == 0) continue;
+                passVertical[curR][curC] = true;
+                passVertical[curR - 1][curC] = true;
+                curR--;
+            } else if (cmd == 'L') {
+                if (curC == 0) continue;
+                passHorizontal[curR][curC] = true;
+                passHorizontal[curR][curC - 1] = true;
+                curC--;
+            } else {
+                if (curC == size - 1) continue;
+                passHorizontal[curR][curC] = true;
+                passHorizontal[curR][curC + 1] = true;
+                curC++;
+            }
+        }
+
+        for (int i = 0 ; i < size; i++) {
+            String ans = "";
+            for (int j = 0 ; j < size; j++) {
+                if (passVertical[i][j] && passHorizontal[i][j]) ans += "+";
+                else if (passVertical[i][j]) ans += "|";
+                else if (passHorizontal[i][j]) ans += "-";
+                else ans += ".";
+            }
+            System.out.println(ans);
+        }
     }
 }
+
+/*
+ * https://fastcampus.co.kr/classroom/215135
+ */
+//class Main {
+//    public static void main(String[] args) throws Exception {
+//        System.setIn(new FileInputStream("src/input.txt"));
+//        Scanner sc = new Scanner(System.in);
+//        int test = sc.nextInt();
+//        String[] result = new String[test];
+//        for (int i = 0; i < test; i++) {
+//            int h = sc.nextInt();
+//            int w = sc.nextInt();
+//            int n = sc.nextInt();
+//            result[i] = findRoom(h, w, n);
+//        }
+//
+//        for (int i = 0; i < test; i++) {
+//            System.out.println(result[i]);
+//        }
+//    }
+//
+//    static String findRoom(int height, int width, int people) {
+//        int distanceFromElevator = (people - 1) / height + 1;
+//        int floor = (people - 1) % height + 1;
+//        return String.format("%d%02d", floor, distanceFromElevator);
+//    }
+//}
 
 /*
  * https://www.acmicpc.net/problem/3085
